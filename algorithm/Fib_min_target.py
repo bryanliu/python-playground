@@ -3,6 +3,26 @@ import cProfile
 import unittest
 
 class Solution:
+    """
+    Given an integer k, return the minimum number of Fibonacci numbers whose sum is equal to k. The same Fibonacci number can be used multiple times.
+    The Fibonacci numbers are defined as:
+    F1 = 1F2 = 1Fn = Fn-1 + Fn-2 for n > 2.
+    It is guaranteed that for the given constraints we can always find such Fibonacci numbers that sum up to k.
+
+    Example 1:
+    Input: k = 7
+    Output: 2
+    Explanation: The Fibonacci numbers are: 1, 1, 2, 3, 5, 8, 13, ...
+    For k = 7 we can use 2 + 5 = 7.
+    Example 2:
+    Input: k = 10
+    Output: 2
+    Explanation: For k = 10 we can use 2 + 8 = 10.
+    Example 3:
+    Input: k = 19
+    Output: 3
+    Explanation: For k = 19 we can use 1 + 5 + 13 = 19.
+    """
     #recursive + memo
     def fib(self, k):
 
@@ -140,8 +160,8 @@ recursive:
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
         1    0.000    0.000   71.922   71.922 <string>:1(<module>)
-74670381/1   55.217    0.000   71.922   71.922 Coin_DP.py:20(backtrade)
-        1    0.000    0.000   71.922   71.922 Coin_DP.py:5(fib)
+74670381/1   55.217    0.000   71.922   71.922 Fib_min_target.py:20(backtrade)
+        1    0.000    0.000   71.922   71.922 Fib_min_target.py:5(fib)
         1    0.000    0.000   71.922   71.922 {built-in method builtins.exec}
         1    0.000    0.000    0.000    0.000 {built-in method builtins.len}
  74670380   16.705    0.000   16.705    0.000 {built-in method builtins.min}
@@ -159,7 +179,7 @@ dp
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
         1    0.000    0.000    0.000    0.000 <string>:1(<module>)
-        1    0.000    0.000    0.000    0.000 Coin_DP.py:38(fib2)
+        1    0.000    0.000    0.000    0.000 Fib_min_target.py:38(fib2)
         1    0.000    0.000    0.000    0.000 {built-in method builtins.exec}
         1    0.000    0.000    0.000    0.000 {built-in method builtins.len}
       100    0.000    0.000    0.000    0.000 {built-in method builtins.min}
