@@ -1,0 +1,40 @@
+# coding=utf-8
+from collections import deque
+
+graph = {}
+graph["you"] = ["alice", "bob", "claire"]
+graph["bob"] = ["anuj", "peggy"]
+graph["alice"] = ["peggy"]
+graph["claire"] = ["thom", "jonny"]
+graph["anuj"] = []
+graph["peggy"] = []
+graph["thom"] = []
+graph["jonny"] = []
+
+
+
+
+def is_mongo_seller(person):
+    return person[-1] == 'y'
+
+
+def search():
+
+    search_queue = deque()
+    search_queue += graph["you"]
+
+    searched = []
+    while search_queue:
+        person = search_queue.popleft()
+        if person not in searched:
+            if is_mongo_seller(person):
+                print person + " is a mongo seller"
+                return True
+            else:
+                search_queue += graph[person]
+            searched.append(person)
+    return False
+
+print search()
+
+# 注意 list + list 的时候会把后面一个当成List加进去，如果加一个字符串，那会吧字符串的每个字母加进去。如果要把字符串作为元素加进去，用append
