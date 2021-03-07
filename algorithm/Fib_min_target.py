@@ -2,6 +2,7 @@ import functools
 import cProfile
 import unittest
 
+
 class Solution:
     """
     Given an integer k, return the minimum number of Fibonacci numbers whose sum is equal to k. The same Fibonacci number can be used multiple times.
@@ -23,7 +24,8 @@ class Solution:
     Output: 3
     Explanation: For k = 19 we can use 1 + 5 + 13 = 19.
     """
-    #recursive + memo
+
+    # recursive + memo
     def fib(self, k):
 
         fib = [1] * 2
@@ -38,9 +40,10 @@ class Solution:
         fib.reverse()
         print(fib)
         n = len(fib)
+
         @functools.lru_cache(None)
         def backtrade(rest):
-            #print(rest)
+            # print(rest)
             if rest == 0:
                 return 0
             ans = float('inf')
@@ -56,8 +59,7 @@ class Solution:
         print(res)
         return res
 
-
-    #dp
+    # dp
     def fib2(self, k):
         if k < 1: return 0
         fib = [1] * 2
@@ -69,38 +71,56 @@ class Solution:
             else:
                 fib.append(a)
 
-        dp = [float('inf')] * (k+1) #dp[i] means how many fibs need for this number i
+        dp = [float('inf')] * (k + 1)  # dp[i] means how many fibs need for this number i
 
-        dp[0] = 1 #0, nothing to choose, only 1 possible result
+        dp[0] = 1  # 0, nothing to choose, only 1 possible result
         n = len(dp)
         for i in range(1, n):
 
             for c in fib:
                 if c == i:
-                    dp[i] = 1 #if equal to fib[c], the count is lowest, which is one
+                    dp[i] = 1  # if equal to fib[c], the count is lowest, which is one
                     break
                 else:
-                    if i>=c:
-                        dp[i] = min(dp[i], dp[i-c]+1) #choose the lowest from previous result
-        print(dp[-1])
+                    if i >= c:
+                        dp[i] = min(dp[i], dp[i - c] + 1)  # choose the lowest from previous result
+        print("result:"+str(dp[-1]))
         return dp[-1]
 
-    # value = "20"
-    # print(f"run for k={value}")
-    # #using cProfile to measure the proformance
-    # print("recursive:")
-    # cProfile.run("fib("+value+")")
-    # print("dp")
-    # cProfile.run("fib2("+value+")")
+value = "20"
+# print(f"run for k={value}")
+# #using cProfile to measure the proformance
+# print("recursive:")
+# cProfile.run("fib("+value+")")
+# print("dp")
+#cProfile.run("s=Solution();s.fib2("+value+")")
+
+
+def proformance_test(value):
+    s = Solution()
+    s.fib2(value)
+#cProfile.run("proformance_test(200)")
+#proformance_test(1378)
 
 class Test(unittest.TestCase):
 
- def test_coin(self):
-     s = Solution()
-     self.assertEqual(3, s.fib(19))
-     self.assertEqual(2, s.fib(7))
-     self.assertEqual(2, s.fib(10))
-     self.assertEqual(7, s.fib(20000))
+    def setUp(self):
+        self.s = Solution()
+
+    #@unittest.skip("don't run")
+    def test_coin(self):
+        s = self.s
+        self.assertEqual(3, s.fib(19))
+        self.assertEqual(2, s.fib(7))
+        self.assertEqual(2, s.fib(10))
+        self.assertEqual(7, s.fib(20000))
+
+    #@unittest.skip("don't run")
+    def test_performance(self):
+        s = Solution()
+        value = 20000
+        cProfile.run(f"proformance_test({value})")
+
 
 if __name__ == '__main__':
     unittest.main()
@@ -191,11 +211,3 @@ when k=9000000, resursive is a little bit slower then dp because of the recursiv
          300069742 function calls (291069742 primitive calls) in 161.043 seconds
          291069687 function calls in 150.179 seconds
 '''
-
-
-
-
-
-
-
-
