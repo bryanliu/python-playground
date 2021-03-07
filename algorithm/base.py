@@ -1,5 +1,8 @@
 import json
-
+"""
+module algorithm.base
+导入方法：from algorithm.base import *  # 如果在目录里面要加上目录的名称，也就是package的名称
+"""
 
 def stringToIntegerList(input):
     return json.loads(input)
