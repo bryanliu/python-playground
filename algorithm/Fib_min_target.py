@@ -1,5 +1,5 @@
-import functools
 import cProfile
+import functools
 import unittest
 
 
@@ -84,30 +84,27 @@ class Solution:
                 else:
                     if i >= c:
                         dp[i] = min(dp[i], dp[i - c] + 1)  # choose the lowest from previous result
-        print("result:"+str(dp[-1]))
+        print("result:" + str(dp[-1]))
         return dp[-1]
 
+
 value = "20"
+
+
 # print(f"run for k={value}")
 # #using cProfile to measure the proformance
 # print("recursive:")
 # cProfile.run("fib("+value+")")
 # print("dp")
-#cProfile.run("s=Solution();s.fib2("+value+")")
+# cProfile.run("s=Solution();s.fib2("+value+")")
 
-
-def proformance_test(value):
-    s = Solution()
-    s.fib2(value)
-#cProfile.run("proformance_test(200)")
-#proformance_test(1378)
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         self.s = Solution()
 
-    #@unittest.skip("don't run")
+    # @unittest.skip("don't run")
     def test_coin(self):
         s = self.s
         self.assertEqual(3, s.fib(19))
@@ -115,11 +112,11 @@ class Test(unittest.TestCase):
         self.assertEqual(2, s.fib(10))
         self.assertEqual(7, s.fib(20000))
 
-    #@unittest.skip("don't run")
+    # @unittest.skip("don't run")
     def test_performance(self):
         s = Solution()
         value = 20000
-        cProfile.run(f"proformance_test({value})")
+        cProfile.run(f"Solution().fib2({value})")
 
 
 if __name__ == '__main__':
