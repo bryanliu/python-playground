@@ -126,6 +126,7 @@ class Test(unittest.TestCase):
     def test_01withvalue(self):
         self.assertEqual(18, knpackage_with_value([2, 2, 4, 6, 3], [3, 4, 8, 9, 6], 9))
         self.assertEqual(8, knpackage_with_value([0, 3, 2, 1], [0, 5, 2, 3], 5))
+        self.assertEqual(12, knpackage_with_value([1, 2, 1, 7, 9, 4], [1, 2, 1, 7, 9, 4], 12))
 
 
 if __name__ == "__main__":
