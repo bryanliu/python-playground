@@ -1,5 +1,8 @@
 
 # 第一个 DP 实现，
+import unittest
+
+
 def printmatrix(matrix):
     for i in range(len(matrix)):
         print( matrix[i])
@@ -79,20 +82,18 @@ def knpackage_state_single_row(itemweights, maxload):
         print( states)
 
 def knpackage_with_value(itemweights, values, maxload):
-    states = [-1 for i in range(maxload + 1)]
-    states[0] = 0
+    states = [0 for i in range(maxload + 1)]
     states[itemweights[0]] = values[0]
 
     for i in range(1, len(itemweights)):
         weight = itemweights[i]
-        j = len(states) - weight - 1
-        while j >=0:
-            if states[j] >= 0:
-                # add the current value with previous value
-                #states[j + weight] = states[j] + values[i]
-                states[j + weight] = max(states[j + weight], states[j] + values[i])
+        j = len(states)  - 1
+        while j >=weight:
+            # add the current value with previous value
+            states[j] = max(states[j], states[j-weight] + values[i])
             j-=1
-    print( states)
+    print(states)
+    return states[-1]
 
 def f(i, currentload, itemweight, maxallowload):
     '''
@@ -119,13 +120,17 @@ def knpackage_backtrack(itemweight, maxallowload):
     maxvalue = f(0,  0, itemweight, maxallowload)
     print( maxvalue)
 
+class Test(unittest.TestCase):
+    def test_01withvalue(self):
+        self.assertEqual(18, knpackage_with_value([2,2,4,6,3], [3,4,8,9,6], 9))
+        self.assertEqual(8, knpackage_with_value([0,3,2,1], [0, 5, 2, 3], 5))
 
-
-
+if __name__ == "__main__":
+    unittest.main()
 
 #print( knpackage_state_single_row([2,2,4,6,3], 10))
 #print knpackage_state_matrix([4,6,3,2,2], 9)
-print(knpackage_with_value([2,2,4,6,3], [3,4,8,9,6], 9))
+#print(knpackage_with_value([2,2,4,6,3], [3,4,8,9,6], 9))
 #knpackage_backtrack([2,2,4,6,3], 10)
 
 
