@@ -21,3 +21,4 @@ class TestCase(unittest.TestCase):
         self.assertEqual(3, lsc("abcde", "ade"))
         self.assertEqual(3, lsc("fosh", "fish"))
         self.assertEqual(5, lsc("helloworld", "hollachild"))
+        self.assertEqual(4, lsc("mtacnu", "mitcmu"))
