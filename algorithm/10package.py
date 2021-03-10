@@ -134,21 +134,21 @@ def fullpackage_with_value_n3(weights, values, size):
     """
     h = len(weights)
     w = size + 1
-    dp = [[0] * (size+1) for _ in range(h)]
+    dp = [[0] * (size + 1) for _ in range(h)]
     w1 = weights[0]
     for i in range(0, w):
         if i + w1 < w:  # 只要不大于边界，都可以放进去
-            dp[0][i+w1] = values[0]
+            dp[0][i + w1] = values[0]
         else:
             break
 
     for i in range(1, h):
         for j in range(w):
             weight = weights[i]
-            dp[i][j] = dp[i-1][j]  # copy from above
-            n = j//weight
-            for k in range(n+1):#边界到n，所以这边得n+1
-                dp[i][j] = max(dp[i][j], dp[i-1][j-k*weight] + values[i]*k)
+            dp[i][j] = dp[i - 1][j]  # copy from above
+            n = j // weight
+            for k in range(n + 1):  # 边界到n，所以这边得n+1
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - k * weight] + values[i] * k)
     for l in dp:
         print(l)
     return dp[-1][-1]
@@ -162,8 +162,8 @@ def fullpackage_with_value_n2(weights, values, size):
     :param size:
     :return:
     """
-    h, w = len(weights), size+1
-    dp = [[0]*w for _ in range(h)]
+    h, w = len(weights), size + 1
+    dp = [[0] * w for _ in range(h)]
     w0 = weights[0]
     for i in range(w):
         if i + w0 < w:
@@ -172,21 +172,21 @@ def fullpackage_with_value_n2(weights, values, size):
     for i in range(1, h):
         for j in range(w):
             weight = weights[i]
-            dp[i][j] = dp[i-1][j]
+            dp[i][j] = dp[i - 1][j]
             if j >= weight:
-                dp[i][j] = max(dp[i][j], dp[i][j-weight] + values[i])
+                dp[i][j] = max(dp[i][j], dp[i][j - weight] + values[i])
     for l in dp:
         print(l)
     return dp[-1][-1]
 
 
 class Test(unittest.TestCase):
-    #@unittest.skip("don't run this now")
+    # @unittest.skip("don't run this now")
     def test_01withvalue(self):
         self.assertEqual(18, knpackage_with_value([2, 2, 4, 6, 3], [3, 4, 8, 9, 6], 9))
         self.assertEqual(8, knpackage_with_value([0, 3, 2, 1], [0, 5, 2, 3], 5))
         self.assertEqual(12, knpackage_with_value([1, 2, 1, 7, 9, 4], [1, 2, 1, 7, 9, 4], 12))
-        self.assertEqual(73, knpackage_with_value([31,26,33,21,40], [31,26,33,21,40], 75))
+        self.assertEqual(73, knpackage_with_value([31, 26, 33, 21, 40], [31, 26, 33, 21, 40], 75))
 
     def test_fullpackage(self):
         self.assertEqual(15, fullpackage_with_value_n3([3, 2, 1], [5, 2, 3], 5))
