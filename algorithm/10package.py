@@ -156,32 +156,31 @@ def fullpackage_with_value_n3(weights, values, size):
 
 def fullpackage_with_value_n2(weights, values, size):
     """
-    这是一个空间复杂度只有n的平方的解，比fullpackage_with_value_n3 复杂度要低
+    这是一个空间复杂度只有n的平方的解，比fullpackage_with_value_n3 复杂度要低.
+    晕，原来凑硬币2就是完全背包问题，并且按照 https://leetcode-cn.com/problems/coin-change-2/ 的思路，空间复杂度做了压缩
     :param weights:
     :param values:
     :param size:
     :return:
     """
     h, w = len(weights), size + 1
-    dp = [[0] * w for _ in range(h)]
+    dp = [0] * w  # 只需要一维数组就够了
+
     w0 = weights[0]
-    for i in range(w):
+    for i in range(w):  # 初始化第一行
         if i + w0 < w:
-            dp[0][i + w0] = values[0]
+            dp[i + w0] = values[0]
 
     for i in range(1, h):
-        for j in range(w):
-            weight = weights[i]
-            dp[i][j] = dp[i - 1][j]
-            if j >= weight:
-                dp[i][j] = max(dp[i][j], dp[i][j - weight] + values[i])
-    for l in dp:
-        print(l)
-    return dp[-1][-1]
+        weight = weights[i]
+        for j in range(weight, w):
+                dp[j] = max(dp[j], dp[j - weight] + values[i])
+
+    return dp[-1]
 
 
 class Test(unittest.TestCase):
-    # @unittest.skip("don't run this now")
+    @unittest.skip("don't run this now")
     def test_01withvalue(self):
         self.assertEqual(18, knpackage_with_value([2, 2, 4, 6, 3], [3, 4, 8, 9, 6], 9))
         self.assertEqual(8, knpackage_with_value([0, 3, 2, 1], [0, 5, 2, 3], 5))
