@@ -30,7 +30,7 @@ class UnionFind:
 
 
 class Solution:
-    def validequation(equations):
+    def validEquation(self, equations):
         if not equations: return False
 
         uf = UnionFind()
@@ -55,7 +55,7 @@ class UnitTest(unittest.TestCase):
         self.s = Solution()
 
     def test_equations_valid(self):
-        self.assertEqual(True, self.s.validequation(["c==c", "b==d", "x!=z"]))
+        self.assertEqual(True, self.s.validEquation(["c==c", "b==d", "x!=z"]))
 
     def test_equation_invalid(self):
-        self.assertEqual(False, self.s.validequation(["a==b", "b!=c", "c==a"]))
+        self.assertEqual(False, self.s.validEquation(["a==b", "b!=c", "c==a"]))
