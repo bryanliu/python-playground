@@ -1,4 +1,5 @@
 import unittest
+from typing import List
 
 """
 给你一个数组equations，装着若干字符串表示的算式。每个算式equations[i]长度都是 4，而且只有这两种情况：a==b或者a!=b，其中a,b可以是任意小写字母。
@@ -15,7 +16,7 @@ class UnionFind:
     def __init__(self):
         self.parents = {}
 
-    def find(self, x):
+    def find(self, x: str) -> int:
         if x not in self.parents:
             self.parents[x] = x
             return x
@@ -23,14 +24,14 @@ class UnionFind:
             self.parents[x] = self.find(self.parents[x])
         return self.parents[x]
 
-    def union(self, x, y):
+    def union(self, x, y) -> None:
         x, y = self.find(x), self.find(y)
         if x != y:
             self.parents[x] = y
 
 
 class Solution:
-    def validEquation(self, equations):
+    def validEquation(self, equations: List[List]):
         if not equations: return False
 
         uf = UnionFind()
