@@ -174,7 +174,7 @@ def fullpackage_with_value_n2(weights, values, size):
     for i in range(1, h):
         weight = weights[i]
         for j in range(weight, w):
-                dp[j] = max(dp[j], dp[j - weight] + values[i])
+            dp[j] = max(dp[j], dp[j - weight] + values[i])
 
     return dp[-1]
 
