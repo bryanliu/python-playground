@@ -27,7 +27,7 @@ def solution(arr, k):
                 m[i][j] = m[i - 1][j - 1] + arr[i - 1]
                 dp[i][j] = dp[i - 1][j - 1] + arr[i - 1]
             else:
-                m[i][j] = max(m[i - 1][j], dp[i - 1][j - 1]) + arr[i - 1]  # 决策，加到第J组，在J-1组的基础上自成一组
+                m[i][j] = max(m[i - 1][j], dp[i - 1][j - 1]) + arr[i - 1]  # 决策，加到第J组，还是在J-1组的基础上自成一组
                 dp[i][j] = max(dp[i - 1][j], m[i][j])  # 决策，放弃i，或者选择i
 
     return dp[-1][-1]
