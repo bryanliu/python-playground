@@ -180,7 +180,7 @@ def fullpackage_with_value_n2(weights, values, size):
 
 
 class Test(unittest.TestCase):
-    @unittest.skip("don't run this now")
+    #@unittest.skip("don't run this now")
     def test_01withvalue(self):
         self.assertEqual(18, knpackage_with_value([2, 2, 4, 6, 3], [3, 4, 8, 9, 6], 9))
         self.assertEqual(8, knpackage_with_value([0, 3, 2, 1], [0, 5, 2, 3], 5))
