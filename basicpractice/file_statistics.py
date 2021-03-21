@@ -35,23 +35,22 @@ def count_line(file):
 
 
 def count_file_in_path(path):
-    res = []
+    res = {}
     for root, dirs, files in os.walk(path):
         for d in dirs:  # find the sub folder first
-            res += count_file_in_path(root + '//' + d)
+            res.update(count_file_in_path(root + '//' + d))
         for f in files:  # count the files in current folder
             lines = count_line(root + "//" + f)
             # windowns 可以用 \ 或者 /的分隔符， 但是linux只能用 /
             print(root + "//" + f, "lines: ", lines)
-            res.append(f)
-            res.append(lines)
+            res[f] = lines
         return res
 
 
 class ut(unittest.TestCase):
 
     def test_read_test_folder(self):
-        self.assertEquals(['d', 4, 'c', 1, "a", 3, "b", 4,'vcruntime140_1.dll', 165], count_file_in_path("../test"))
+        self.assertEquals({'d': 4, 'c': 1, "a": 3, "b": 4, 'vcruntime140_1.dll': 165}, count_file_in_path("../test"))
 
 
 if __name__ == '__main__':
