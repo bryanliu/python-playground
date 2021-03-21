@@ -1,6 +1,11 @@
 import os
 import unittest
 
+'''
+循环目录下的文件，统计每个文件的行数，并且不统计空行。可以参考：
+https://blog.csdn.net/baidu_35692628/article/details/106960164?utm_medium=distribute.pc_relevant_download.none-task-blog-baidujs-3.nonecase&depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-baidujs-3.nonecase
+'''
+
 
 def count_line(file):
     fp = open(file)
