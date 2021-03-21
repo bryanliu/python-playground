@@ -20,6 +20,7 @@ def count_file_in_path(path):
             res += count_file_in_path(root + '//' + d)
         for f in files:  # count the files in current folder
             lines = count_line(root + "//" + f)
+            # windowns 可以用 \ 或者 /的分隔符， 但是linux只能用 /
             print(root + "//" + f, "lines: ", lines)
             res.append(f)
             res.append(lines)
