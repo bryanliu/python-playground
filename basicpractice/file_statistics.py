@@ -8,13 +8,29 @@ https://blog.csdn.net/baidu_35692628/article/details/106960164?utm_medium=distri
 
 
 def count_line(file):
-    fp = open(file)
+
     line_count = 0
-    for line in fp.readlines():
-        if not line.split():
-            continue
-        line_count += 1
-    fp.close()
+    # way 1: open and close files
+    # fp = open(file)
+    # for line in fp.readlines():
+    #     if not line.split():
+    #         continue
+    #     line_count += 1
+    # fp.close()
+    with open(file, 'rb') as f:
+        #way 2: open and readlines
+        # for line in f.readlines():
+        #     if not line.split():
+        #         continue
+        #     line_count += 1
+        #way 3: open and readline
+        while line:=f.readline():
+            if not line.split():
+                continue
+            line_count += 1
+        f.close()
+
+
     return line_count
 
 
@@ -35,7 +51,7 @@ def count_file_in_path(path):
 class ut(unittest.TestCase):
 
     def test_read_test_folder(self):
-        self.assertEquals(['d', 4, 'c', 1, "a", 3, "b", 4], count_file_in_path("../test"))
+        self.assertEquals(['d', 4, 'c', 1, "a", 3, "b", 4,'vcruntime140_1.dll', 165], count_file_in_path("../test"))
 
 
 if __name__ == '__main__':
