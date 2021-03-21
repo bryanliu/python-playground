@@ -1,8 +1,8 @@
 import os
 import unittest
 
-def count_line(file):
 
+def count_line(file):
     fp = open(file)
     line_count = 0
     for line in fp.readlines():
@@ -12,18 +12,18 @@ def count_line(file):
     fp.close()
     return line_count
 
+
 def count_file_in_path(path):
     res = []
     for root, dirs, files in os.walk(path):
-        for d in dirs: #find the sub folder first
-            res += count_file_in_path(root+ '//' + d)
-        for f in files: #count the files in current folder
+        for d in dirs:  # find the sub folder first
+            res += count_file_in_path(root + '//' + d)
+        for f in files:  # count the files in current folder
             lines = count_line(root + "//" + f)
-            print(root + "//"+ f, "lines: " , lines)
+            print(root + "//" + f, "lines: ", lines)
             res.append(f)
             res.append(lines)
         return res
-
 
 
 class ut(unittest.TestCase):
