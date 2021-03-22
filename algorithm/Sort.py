@@ -25,6 +25,19 @@ def insertsort(arr):
     return arr
 
 
+def selectionsort(arr):
+    print("selection sort before: ", arr)
+    for i in range(len(arr)):
+        min, minidx = float('inf'), 0
+        for j in range(i, len(arr)):
+            if arr[j] < min:
+                min = arr[j]
+                minidx = j
+        arr[i], arr[minidx] = arr[minidx], arr[i]
+    print("selection sort after: ", arr)
+    return arr
+
+
 class ut(unittest.TestCase):
 
     def seUp(self):
@@ -39,6 +52,11 @@ class ut(unittest.TestCase):
         arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
         expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
         self.assertEqual(expect, insertsort(arr[:]))
+
+    def test_selection_sort_success(self):
+        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
+        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
+        self.assertEqual(expect, selectionsort(arr[:]))
 
 
 if __name__ == "__main__":
