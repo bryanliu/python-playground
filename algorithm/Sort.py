@@ -70,29 +70,23 @@ class ut(unittest.TestCase):
 
     def setUp(self):
         self.s = Solution()
+        self.arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
+        self.expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
 
     def test_bubble_sort_success(self):
-        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
-        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
-        self.assertEqual(expect, self.s.bubblesort(arr[:]))
+        self.assertEqual(self.expect, self.s.bubblesort(self.arr[:]))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_insert_sort_success(self):
-        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
-        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
-        self.assertEqual(expect, self.s.insertsort(arr[:]))
+        self.assertEqual(self.expect, self.s.insertsort(self.arr[:]))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_selection_sort_success(self):
-        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
-        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
-        self.assertEqual(expect, self.s.selectionsort(arr[:]))
+        self.assertEqual(self.expect, self.s.selectionsort(self.arr[:]))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_quick_sort_success(self):
-        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
-        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
-        self.assertEqual(expect, self.s.quicksort(arr[:]))
+        self.assertEqual(self.expect, self.s.quicksort(self.arr[:]))
 
 
 if __name__ == "__main__":
