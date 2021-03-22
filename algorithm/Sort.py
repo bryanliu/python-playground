@@ -2,11 +2,12 @@ import unittest
 
 
 def bubblesort(arr):
+    print("bubble sort before: ", arr)
     for i in range(len(arr)):
         for j in range(1, len(arr) - i):
             if arr[j] < arr[j - 1]:
                 arr[j], arr[j - 1] = arr[j - 1], arr[j]
-
+    print("bubble sort after: ", arr)
     return arr
 
 
@@ -38,6 +39,37 @@ def selectionsort(arr):
     return arr
 
 
+def partition(arr, i, j) -> int:
+    if i > j: return
+    pivot = arr[j]
+    y = i
+    for x in range(i, j):
+        if arr[x] < pivot:
+            arr[y], arr[x] = arr[x], arr[y]
+            y += 1
+
+    arr[y], arr[j] = arr[j], arr[y]
+    return y
+
+
+def quicksortinternal(arr, i, j):
+    if i > j: return
+
+    pivot = partition(arr, i, j)
+    quicksortinternal(arr, i, pivot - 1)
+    quicksortinternal(arr, pivot + 1, j)
+
+
+def quicksort(arr):
+    print("quick sort before: ", arr)
+
+    if not arr: return
+    quicksortinternal(arr, 0, len(arr) - 1)
+
+    print("quick sort after: ", arr)
+    return arr
+
+
 class ut(unittest.TestCase):
 
     def seUp(self):
@@ -57,6 +89,11 @@ class ut(unittest.TestCase):
         arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
         expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
         self.assertEqual(expect, selectionsort(arr[:]))
+
+    def test_quick_sort_success(self):
+        arr = [3, 4, 5, 6, 7, 2, 1, 33, 3, 6, 8, 9, 2, 1]
+        expect = [1, 1, 2, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 33]
+        self.assertEqual(expect, quicksort(arr[:]))
 
 
 if __name__ == "__main__":
