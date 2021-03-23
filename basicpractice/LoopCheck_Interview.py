@@ -1,6 +1,6 @@
+import re
 import unittest
 from collections import deque, defaultdict
-import re
 
 '''
 这是一个面试题，在一个Excel里面有 AA 到 ZZ ，00 ~ 99 的格子范围
@@ -22,11 +22,13 @@ def check(input):
 
     # initial adj and indegress
     def getidx(s):
-        if not s or len(s) != 4: return -1
+        if not s or len(s) != 4:
+            raise Exception('cell index should be 4 chars, but got', s)
         return int(s[2:4]) * w + getcolidx(s[0:2])
 
     def getcolidx(s):
-        if not s or len(s) != 2: return -1
+        if not s or len(s) != 2:
+            raise Exception('column index should be 2 chars, but got', s)
         return (ord(s[0]) - ord('A')) * 26 + ord(s[1]) - ord('A')
 
     for k, v in input.items():
@@ -54,7 +56,7 @@ def check(input):
 
 
 class ut(unittest.TestCase):
-    #@unittest.skip
+    # @unittest.skip
     def test_true(self):
         input = {
             'AA00': "10",
@@ -63,7 +65,7 @@ class ut(unittest.TestCase):
         }
         self.assertEqual(True, check(input))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_false(self):
         input = {
             "AA00": "10",
@@ -72,18 +74,25 @@ class ut(unittest.TestCase):
         }
         self.assertEqual(False, check(input))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_input_none(self):
         input = {
         }
         self.assertEqual(True, check(input))
 
-    #@unittest.skip
+    # @unittest.skip
     def test_input_exception(self):
         input = {
             "ABB00": "AA01",
         }
-        self.assertEqual(False, check(input))
+        self.assertRaises(Exception, check, input)
+        '''
+        assertRaises, 必须按照 方法名，参数的形式调用，起了怪了
+        '''
+        # self.assertRaisesRegexp(ZeroDivisionError, "division by zero", 0/0)
+        # self.assertEqual(False, check(input))
+        # self.failureException
+
 
 if __name__ == "__main__":
     unittest.main()
