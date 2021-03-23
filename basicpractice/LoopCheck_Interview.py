@@ -1,5 +1,6 @@
 import unittest
 from collections import deque, defaultdict
+import re
 
 '''
 这是一个面试题，在一个Excel里面有 AA 到 ZZ ，00 ~ 99 的格子范围
@@ -29,23 +30,12 @@ def check(input):
         return (ord(s[0]) - ord('A')) * 26 + ord(s[1]) - ord('A')
 
     for k, v in input.items():
-        if v.isdigit():  # digit, skip
-            continue
-        else:
-            key = ""
-            for c in v:
-                if c.isalnum():
-                    key += c
-                else:
-                    if key:
-                        k2 = getidx(key)
-                        indegres[k2] += 1
-                        adj[getidx(k)].append(k2)
-                    key = ""
-            if key:
-                k2 = getidx(key)
-                indegres[k2] += 1
-                adj[getidx(k)].append(k2)
+        match = re.findall('([A-Z]{2}[0-9]{2})', v)
+        k1 = getidx(k)
+        for cellidx in match:
+            k2 = getidx(cellidx)
+            indegres[k2] += 1
+            adj[k1].append(k2)
 
     queue = deque()
 
@@ -64,7 +54,7 @@ def check(input):
 
 
 class ut(unittest.TestCase):
-    # @unittest.skip
+    #@unittest.skip
     def test_true(self):
         input = {
             'AA00': "10",
@@ -73,6 +63,7 @@ class ut(unittest.TestCase):
         }
         self.assertEqual(True, check(input))
 
+    #@unittest.skip
     def test_false(self):
         input = {
             "AA00": "10",
@@ -81,17 +72,18 @@ class ut(unittest.TestCase):
         }
         self.assertEqual(False, check(input))
 
+    #@unittest.skip
     def test_input_none(self):
         input = {
         }
         self.assertEqual(True, check(input))
 
+    #@unittest.skip
     def test_input_exception(self):
         input = {
             "ABB00": "AA01",
         }
         self.assertEqual(False, check(input))
-
 
 if __name__ == "__main__":
     unittest.main()
