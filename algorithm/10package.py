@@ -70,14 +70,22 @@ def knpackage_state_single_row(itemweights, maxload):
 
         weight = itemweights[i]
 
-        j = len(states) - weight - 1
+        # j = len(states) - weight - 1
+        #
+        # while j >= 0:
+        #     if states[j] == 1:
+        #         states[j + weight] = 1
+        #     j -= 1
+
+        j = len(states) - 1
 
         while j >= 0:
-            if states[j] == 1:
-                states[j + weight] = 1
+            if j >= weight:
+                states[j] = max(states[j], states[j-weight])
             j -= 1
 
-        print(states)
+    print(states)
+    return states
 
 
 def knpackage_with_value(itemweights, values, maxload):
@@ -180,13 +188,17 @@ def fullpackage_with_value_n2(weights, values, size):
 
 
 class Test(unittest.TestCase):
-    #@unittest.skip("don't run this now")
+    @unittest.skip("don't run this now")
     def test_01withvalue(self):
         self.assertEqual(18, knpackage_with_value([2, 2, 4, 6, 3], [3, 4, 8, 9, 6], 9))
         self.assertEqual(8, knpackage_with_value([0, 3, 2, 1], [0, 5, 2, 3], 5))
         self.assertEqual(12, knpackage_with_value([1, 2, 1, 7, 9, 4], [1, 2, 1, 7, 9, 4], 12))
         self.assertEqual(73, knpackage_with_value([31, 26, 33, 21, 40], [31, 26, 33, 21, 40], 75))
 
+    def test_01package(self):
+        self.assertEqual([1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1], knpackage_state_single_row([2,2,4,6,3], 10))
+
+    @unittest.skip
     def test_fullpackage(self):
         self.assertEqual(15, fullpackage_with_value_n3([3, 2, 1], [5, 2, 3], 5))
         self.assertEqual(15, fullpackage_with_value_n2([3, 2, 1], [5, 2, 3], 5))
