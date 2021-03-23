@@ -81,7 +81,7 @@ def knpackage_state_single_row(itemweights, maxload):
 
         while j >= 0:
             if j >= weight:
-                states[j] = max(states[j], states[j-weight])
+                states[j] = max(states[j], states[j - weight])
             j -= 1
 
     print(states)
@@ -196,7 +196,7 @@ class Test(unittest.TestCase):
         self.assertEqual(73, knpackage_with_value([31, 26, 33, 21, 40], [31, 26, 33, 21, 40], 75))
 
     def test_01package(self):
-        self.assertEqual([1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1], knpackage_state_single_row([2,2,4,6,3], 10))
+        self.assertEqual([1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1], knpackage_state_single_row([2, 2, 4, 6, 3], 10))
 
     @unittest.skip
     def test_fullpackage(self):
