@@ -33,6 +33,6 @@ class Mythread(threading.Thread):
 for _ in range(10):
     t1 = Mythread()
     t1.start()
-    #t1.join() #如果不加这个，那主线程就极有可能比其他线程先执行完
+    # t1.join() #如果不加这个，那主线程就极有可能比其他线程先执行完
 
 print('main thread stop', current_thread().getName())
