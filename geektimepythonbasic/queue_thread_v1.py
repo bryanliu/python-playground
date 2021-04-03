@@ -9,7 +9,7 @@ import time
 from queue import Queue
 from threading import current_thread
 
-queue = Queue(20)
+queue = Queue(20)  # 初始化一个20个空间的Queue
 
 
 class Producer(threading.Thread):
