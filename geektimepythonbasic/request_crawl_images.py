@@ -2,8 +2,8 @@ import re
 
 import requests
 
-content = requests.get("http://www.cnu.cc/discoveryPage/hot-%E4%BA%BA%E5%83%8F")
-print(content.text)
+content = requests.get("http://www.cnu.cc/discoveryPage/hot-风光")
+# print(content.text)
 pattern = re.compile(r'<a href="(.*?)".*?title">(.*?)</div>', re.S)  # re.S 点匹配换行符
 # 匹配 图集的链接以及Title
 # 注意，这边的正则都要用到非贪婪模式，不然就会匹配到最后
