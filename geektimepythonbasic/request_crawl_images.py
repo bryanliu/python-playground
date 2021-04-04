@@ -4,6 +4,7 @@ import shutil
 
 import requests
 from bs4 import BeautifulSoup
+from threading import Thread
 
 from geektimepythonbasic.Decorator_timer import timer
 
@@ -15,11 +16,13 @@ def downloadimage(imageurl, imagepath):
     :param imagepath:
     :return:
     """
+    print(f"start to download {imagepath}")
     resp = requests.get(imageurl, stream=True)
     if resp.status_code == 200:
         with open(imagepath, 'wb') as f:
             resp.raw.decode_content = True
             shutil.copyfileobj(resp.raw, f)
+            print(f"end to download {imagepath}")
 
 
 @timer
@@ -46,14 +49,18 @@ def getcontent_re(content):
     imgpattern = re.compile(r'<img src="(.*?jpg).*?".*?alt="(.*?)">', re.S)
     imgresult = re.findall(imgpattern, content.text)
     for res in imgresult:
-        print(res)
+        print(f"found picture {res}")
         # pass
         url, alt = res
         path = os.path.abspath("./downloadtmp")
         name = os.path.basename(url)
-        print(name)
-        downloadimage(url, os.path.join(path, name))
-        break
+        #print(name)
+        imagepath = os.path.join(path, alt +".jpg")
+        t = Thread(target=downloadimage, args=(url, imagepath))
+        t.start()
+        #t.join() # 加了Join就不能并行执行了，Join的意思是先让这个线程执行完，再执行当前县城
+        #downloadimage(url, os.path.join(path, name))
+        #break
 
 
 def getcontent_beautifulsoup(content):
@@ -73,4 +80,5 @@ def getcontent_beautifulsoup(content):
 
 url = "http://www.cnu.cc/discoveryPage/hot-风光"
 
-geturl(url)
+if __name__ == "__main__":
+    geturl(url)
