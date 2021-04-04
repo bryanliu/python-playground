@@ -46,7 +46,7 @@ def getcontent_re(content):
         # print(image, name)
 
     # 找出所有的<img 标记的图片，并且将jpg 后面的参数去掉。
-    imgpattern = re.compile(r'<img src="(.*?jpg).*?".*?alt="(.*?)">', re.S)
+    imgpattern = re.compile(r'<img src="(.*?jpg).*?".*?alt="(.*?)">', re.S)# re.S 点匹配换行符
     imgresult = re.findall(imgpattern, content.text)
     thread_list = []
     for res in imgresult:
@@ -54,7 +54,7 @@ def getcontent_re(content):
         # pass
         url, alt = res
         path = os.path.abspath("./downloadtmp")
-        name = os.path.basename(url)
+        name = os.path.basename(url) #取出url中的最后一段，比如http://a/b/c.jpg, 最后会得到 c.jpg
         #print(name)
         imagepath = os.path.join(path, alt +".jpg")
         t = Thread(target=downloadimage, args=(url, imagepath))
