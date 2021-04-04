@@ -11,7 +11,7 @@ def timer(func):
         start = time.time()
         func(param)
         end = time.time()
-        print(f"spend {end - start} to execute the function")
+        print(f"spend {end - start} to execute the function {func}")
 
     return wapper
 
@@ -23,5 +23,8 @@ def target_func(param):
     time.sleep(1)
 
 
-target_func("a", "b")
+
 # >> spend 1.0040099620819092 to execute the function
+
+if __name__ == "__main__":
+    target_func("a", "b")
