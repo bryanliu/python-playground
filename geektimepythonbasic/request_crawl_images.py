@@ -48,6 +48,7 @@ def getcontent_re(content):
     # 找出所有的<img 标记的图片，并且将jpg 后面的参数去掉。
     imgpattern = re.compile(r'<img src="(.*?jpg).*?".*?alt="(.*?)">', re.S)
     imgresult = re.findall(imgpattern, content.text)
+    thread_list = []
     for res in imgresult:
         print(f"found picture {res}")
         # pass
@@ -58,9 +59,12 @@ def getcontent_re(content):
         imagepath = os.path.join(path, alt +".jpg")
         t = Thread(target=downloadimage, args=(url, imagepath))
         t.start()
+        thread_list.append(t)
         #t.join() # 加了Join就不能并行执行了，Join的意思是先让这个线程执行完，再执行当前县城
         #downloadimage(url, os.path.join(path, name))
         #break
+    for t in thread_list:
+        t.join()
 
 
 def getcontent_beautifulsoup(content):
