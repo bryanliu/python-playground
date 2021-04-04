@@ -22,3 +22,13 @@ imgresult = re.findall(imgpattern, content.text)
 for res in imgresult:
     print(res)
     # pass
+
+# 使用 beautiful soap 拿到所有的image
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(content.text, "lxml")
+images = soup.find_all('img')  # 注意是find下划线all, 不是 findall
+# print(images)
+# 效果和上面是类似的
+for img in images:
+    print(img.get("src"), " | ", img.get("alt"))
