@@ -28,7 +28,7 @@ def count_line(file):
             if not line.split():
                 continue
             line_count += 1
-        f.close()
+        # f.close() # 用with的方式就不用close了。
 
 
     return line_count
