@@ -96,13 +96,36 @@ class MockFapiao:
             data.append(table.row_values(i))
         return data
 
+    def get_additional_in(self, additional, row_no):
+        '''
+        解析additional 中的 IN 节点的数据, 解析出来的节点数和 row_no一致，如果节点不够，用最后一个节点补齐。
+        :param additional:
+        :param row_no:
+        :return:
+        '''
+        nodes = []
+        nodestr = re.findall(r".*IN:(.*)$", additional, re.S)
+        if not nodestr: return nodes
+        nodes = nodestr[0].split()
+        for i in range(len(nodes)):
+            nodes[i] = re.sub(r"\D", "", nodes[i])
+        if len(nodes) >= row_no:
+            return nodes[:row_no]
+        else:
+            last_one = nodes[-1]
+            for _ in range(row_no - len(nodes)):
+                nodes.append(last_one)
+            return nodes
+
     def generate_fapiao(self, row):
         if not row: return
         note = row[8]
+        additional = row[7]
         fapiaos = []
         lines = self.parse_note(note)
+        nodes = self.get_additional_in(additional, len(lines))
         # 每行都生成一张发票，也就是每张发票都是一行
-        for line in lines:
+        for i, line in enumerate(lines):
             f = Fapiao()
             f.supplierName = row[6]
             f.invoiceCode = special_fapiao_code if fapiao_type(note) == "special" else normal_fapiao_code
@@ -110,7 +133,7 @@ class MockFapiao:
             f.issueDate = time.strftime("%Y-%m-%d")
             f.checkCode = '12345678901234567890'
             f.supplierTaxNumber = sellertaxNoMapping[row[6]]
-            f.note = row[8]
+            f.note = row[8] + " IN:" + nodes[i]
             f.buyerName = buyertaxNoMapping[int(row[3])][0]
             f.buyerTaxNumber = buyertaxNoMapping[int(row[3])][1]
             f.itemList.append(line)
@@ -255,9 +278,43 @@ class UT(unittest.TestCase):
         print(f'generated invoice number {res}')
         self.assertIsNotNone(res)
 
+    def test_get_additional(self):
+        additional = """
+        "PO: 4503291947
+GR: 5034410407/5034410408
+IN: 202100011264
+     202100011265"
+        """
+        res = self.f.get_additional_in(additional, 2)
+        self.assertEqual(2, len(res))
+        self.assertEqual("202100011264", res[0])
+        self.assertEqual("202100011265", res[1])
+
+    def test_get_additional_one_add_two_row(self):
+        additional = """
+        "PO: 4503291947
+GR: 5034410407/5034410408
+IN: 202100011264"
+        """
+        res = self.f.get_additional_in(additional, 2)
+        self.assertEqual(2, len(res))
+        self.assertEqual("202100011264", res[0])
+        self.assertEqual("202100011264", res[1])
+
+    def test_get_additional_two_add_one_row(self):
+        additional = """
+        "PO: 4503291947
+GR: 5034410407/5034410408
+IN: 202100011264
+     202100011265"
+        """
+        res = self.f.get_additional_in(additional, 1)
+        self.assertEqual(1, len(res))
+        self.assertEqual("202100011264", res[0])
+
 
 if __name__ == "__main__":
     # MockFapiao().get_mock_fapiao()
     mockfapiao = MockFapiao()
     mockfapiao.get_mock_fapiao('/Users/admin/Downloads/mock 发票20210330_all.xls')
-    # unittest.main()
+    #unittest.main()
