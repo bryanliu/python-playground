@@ -335,6 +335,7 @@ IN: 202100011264
 if __name__ == "__main__":
     # MockFapiao().get_mock_fapiao()
     mockfapiao = MockFapiao()
-    insert_to_sandbox = False
-    mockfapiao.get_mock_fapiao('/Users/admin/Downloads/mock 发票20210330 (1).xls', insert_to_sandbox)
+    insert_to_sandbox = False  # 如果想直接插入到Sandbox，请把这个改为True
+    file_path = '/Users/admin/Downloads/mock 发票20210330 (1).xls'
+    mockfapiao.get_mock_fapiao(file_path, insert_to_sandbox)
     # unittest.main()
