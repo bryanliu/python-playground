@@ -7,6 +7,7 @@ from json import JSONEncoder
 
 import requests
 import xlrd
+from requests_oauthlib import OAuth1
 
 '''
 这个脚本是根据客户给的Excel数据生成Mock发票，根据特定的逻辑，一行数据可能会生成多张发票。客户会在Note 里面标注要生成几张
@@ -206,18 +207,29 @@ class MockFapiao:
 
     def insert_to_sandbox(self, mockfapiao):
         # 将数据插入到sandbox
+        global token_key, token_secret
+        if not token_key or not token_secret:
+            print("Sandbox token key or token secret not set, please input your token secret and secret:")
+            token_key = input("token key:")
+            token_secret = input("token secret:")
 
         url = "https://api-sandbox.tradeshiftchina.cn/tradeshift/rest/external/cn-pay-ultimate-fapiao-lookup/mock/invoice"
 
         payload = mockfapiao.encode('utf-8')
+        auth = OAuth1(client_key="OwnAccount", client_secret="OwnAccount",
+                      resource_owner_key=token_key,
+                      resource_owner_secret=token_secret)
         headers = {
-            'Authorization': 'OAuth oauth_consumer_key="OwnAccount",oauth_token="a3nm8sw7Jc6gF6q7Wm-G2GR%2B-K9SbG",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1618815380",oauth_nonce="hpwWRM",oauth_version="1.0",oauth_signature="CTfC635baiEMQECEzcV1oJWs0cM%3D"',
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
-
-        print("Insert to Sandbox successfully, response: ", response.text)
+        response = requests.request("POST", url, auth=auth, data=payload, headers=headers)
+        if response.status_code == 200:
+            print("Insert to Sandbox successfully, response: ", response.text)
+            return True
+        else:
+            print("something wrong, please check response", response)
+            return False
 
     def get_mock_fapiao(self, filename, insert_to_server=False):
 
@@ -225,12 +237,17 @@ class MockFapiao:
         fapiaos = []
         for onerow in allrows:
             fapiaos += self.generate_fapiao(onerow)
+        totalinsert = 0
         for f in fapiaos:
             jsonstr = json.dumps(f, cls=Encoder, ensure_ascii=False)
             print("\nMock Fapiao", jsonstr)
             if insert_to_server:
-                self.insert_to_sandbox(jsonstr)
-        print(f"total generated {len(fapiaos)} fapiaos")
+                if (self.insert_to_sandbox(jsonstr)):
+                    totalinsert += 1
+
+        print(f"Total generated {len(fapiaos)} fapiaos. ",
+              (f"Total insert {totalinsert} to sandbox successfully" if insert_to_server else
+               "These data not add into sandbox yet, please add these data manually "))
 
 
 class UT(unittest.TestCase):
@@ -344,9 +361,12 @@ IN: 202100011264
         self.assertEqual("202100011264", res[0])
 
 
+token_key = ""
+token_secret = ""
+
 if __name__ == "__main__":
     mockfapiao = MockFapiao()
-    insert_to_sandbox = False  # 如果想直接插入到Sandbox，请把这个改为True
+    insert_to_sandbox = True  # 如果想直接插入到Sandbox，请把这个改为True
     file_path = '/Users/admin/Downloads/mock 发票20210330 (1).xls'
     mockfapiao.get_mock_fapiao(file_path, insert_to_sandbox)
     # unittest.main()
