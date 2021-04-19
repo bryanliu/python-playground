@@ -125,7 +125,7 @@ class MockFapiao:
         fapiaos = []
         lines = self.parse_note(note)
         nodes = self.get_additional_in(additional, len(lines))
-        # 每行都生成一张发票，也就是每张发票都是一行
+        # 目前要求是每行都生成一张发票，也就是每张发票都是一行
         for i, line in enumerate(lines):
             f = Fapiao()
             f.supplierName = row[6]
@@ -147,7 +147,7 @@ class MockFapiao:
 
     def parse_note(self, note):
         '''
-        根据 NOTE 解析出有几个发票Line
+        根据 NOTE 解析出有几个发票Line，发票NOTE里面如果出现***元的 税前/税后金额，有几个金额就要生成几个发票行。
         :param note:
         :return: List Fapiao_line
         '''
@@ -202,13 +202,7 @@ class MockFapiao:
         print("Insert to Sandbox successfully, response: ", response.text)
 
     def get_mock_fapiao(self, filename, insert_to_server=False):
-        # f = Fapiao()
-        # l1 = Fapiao_line()
-        # f.itemList.append(l1)
-        # #正常类无法直接JSON 序列化，自定义一个Encoder，返回o.__dict__
-        # print(json.dumps(f, cls=Encoder))
-        # print(Encoder().encode(l1))
-        # print(Encoder().encode(f))
+
         allrows = self.read_xml(filename)
         fapiaos = []
         for onerow in allrows:
@@ -333,7 +327,6 @@ IN: 202100011264
 
 
 if __name__ == "__main__":
-    # MockFapiao().get_mock_fapiao()
     mockfapiao = MockFapiao()
     insert_to_sandbox = False  # 如果想直接插入到Sandbox，请把这个改为True
     file_path = '/Users/admin/Downloads/mock 发票20210330 (1).xls'
