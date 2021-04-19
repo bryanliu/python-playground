@@ -5,6 +5,7 @@ import time
 import unittest
 from json import JSONEncoder
 
+import requests
 import xlrd
 
 
@@ -185,7 +186,22 @@ class MockFapiao:
 
         return linelist
 
-    def get_mock_fapiao(self, filename):
+    def insert_to_sandbox(self, mockfapiao):
+        # 将数据插入到sandbox
+
+        url = "https://api-sandbox.tradeshiftchina.cn/tradeshift/rest/external/cn-pay-ultimate-fapiao-lookup/mock/invoice"
+
+        payload = mockfapiao.encode('utf-8')
+        headers = {
+            'Authorization': 'OAuth oauth_consumer_key="OwnAccount",oauth_token="a3nm8sw7Jc6gF6q7Wm-G2GR%2B-K9SbG",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1618815380",oauth_nonce="hpwWRM",oauth_version="1.0",oauth_signature="CTfC635baiEMQECEzcV1oJWs0cM%3D"',
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print("Insert to Sandbox successfully, response: ", response.text)
+
+    def get_mock_fapiao(self, filename, insert_to_server=False):
         # f = Fapiao()
         # l1 = Fapiao_line()
         # f.itemList.append(l1)
@@ -198,7 +214,10 @@ class MockFapiao:
         for onerow in allrows:
             fapiaos += self.generate_fapiao(onerow)
         for f in fapiaos:
-            print(json.dumps(f, cls=Encoder, ensure_ascii=False))
+            jsonstr = json.dumps(f, cls=Encoder, ensure_ascii=False)
+            print("\nMock Fapiao", jsonstr)
+            if insert_to_server:
+                self.insert_to_sandbox(jsonstr)
         print(f"total generated {len(fapiaos)} fapiaos")
 
 
@@ -316,5 +335,6 @@ IN: 202100011264
 if __name__ == "__main__":
     # MockFapiao().get_mock_fapiao()
     mockfapiao = MockFapiao()
-    mockfapiao.get_mock_fapiao('/Users/admin/Downloads/mock 发票20210330_all.xls')
-    #unittest.main()
+    insert_to_sandbox = False
+    mockfapiao.get_mock_fapiao('/Users/admin/Downloads/mock 发票20210330 (1).xls', insert_to_sandbox)
+    # unittest.main()
