@@ -361,6 +361,7 @@ IN: 202100011264
         self.assertEqual("202100011264", res[0])
 
 
+# token key 和 secret 可以配置在这儿，也可以在运行的时候进行输入， 请注意保密
 token_key = ""
 token_secret = ""
 
