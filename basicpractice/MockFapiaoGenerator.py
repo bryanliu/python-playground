@@ -8,6 +8,24 @@ from json import JSONEncoder
 import requests
 import xlrd
 
+'''
+这个脚本是根据客户给的Excel数据生成Mock发票，根据特定的逻辑，一行数据可能会生成多张发票。客户会在Note 里面标注要生成几张
+金额是多少的发票，比如：
+* mock三张普票（一张300元,一张330元,一张600元）， 要生成三张税后金额为300, 330, 600 的发票
+* mock一张专票，不含税金额1000元，税率6%  要生成一张税前金额为1000 的发票。
+另外对于IN 这个字段，如果有多张发票，需要将IN中的多个数字串解析出来，和发票一一对应，以IN:********的形式放到NOTE中。
+如果IN中的数字串不够，则多出来的发票用最后一个数字串
+
+这里面用到的python的知识点
+* 正则searchall，
+* 在有回车的内容中searchall
+* re.sub() 替换内容
+* 时间 format time.strftime("%Y-%m-%d")
+* 随机8位数字的字符串 random.sample(list, 位数) 
+* Excel 解析 xlrd
+
+'''
+
 
 class Fapiao():
     def __init__(self):
@@ -105,11 +123,11 @@ class MockFapiao:
         :return:
         '''
         nodes = []
-        nodestr = re.findall(r"IN:(.*)$", additional, re.S)
+        nodestr = re.findall(r"IN:(.*)$", additional, re.S)  # 匹配换行
         if not nodestr: return nodes
         nodes = nodestr[0].split()
         for i in range(len(nodes)):
-            nodes[i] = re.sub(r"\D", "", nodes[i])
+            nodes[i] = re.sub(r"\D", "", nodes[i])  # 去掉非数字字母
         if len(nodes) >= row_no:
             return nodes[:row_no]
         else:
@@ -331,4 +349,4 @@ if __name__ == "__main__":
     insert_to_sandbox = False  # 如果想直接插入到Sandbox，请把这个改为True
     file_path = '/Users/admin/Downloads/mock 发票20210330 (1).xls'
     mockfapiao.get_mock_fapiao(file_path, insert_to_sandbox)
-    #unittest.main()
+    # unittest.main()
