@@ -24,6 +24,7 @@ from requests_oauthlib import OAuth1
 * 时间 format time.strftime("%Y-%m-%d")
 * 随机8位数字的字符串 random.sample(list, 位数) 
 * Excel 解析 xlrd
+* json.dump 对象的时候要重写一下JSONEncoder。
 
 '''
 
