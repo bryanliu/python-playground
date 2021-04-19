@@ -105,7 +105,7 @@ class MockFapiao:
         :return:
         '''
         nodes = []
-        nodestr = re.findall(r".*IN:(.*)$", additional, re.S)
+        nodestr = re.findall(r"IN:(.*)$", additional, re.S)
         if not nodestr: return nodes
         nodes = nodestr[0].split()
         for i in range(len(nodes)):
@@ -154,8 +154,8 @@ class MockFapiao:
         if not note: return []
         linelist = []
         if re.match(r'.*不含税金额.*', note):
-            amoutlist = re.findall(r'\D*(\d+?)元', note)
-            taxlist = re.findall(r'.*税率(\d+)%', note)
+            amoutlist = re.findall(r'(\d+?)元', note)
+            taxlist = re.findall(r'税率(\d+)%', note)
             taxrate = 0.06 if not taxlist else int(taxlist[0]) / 100
             for amount in amoutlist:
                 amount = int(amount)
@@ -169,8 +169,8 @@ class MockFapiao:
                 linelist.append(line)
         elif re.match(r".*普票.*", note):
             # normal invoide
-            amoutlist = re.findall(r'\D*(\d+?)元', note)
-            taxlist = re.findall(r'.*税率(\d+)%', note)
+            amoutlist = re.findall(r'(\d+?)元', note)
+            taxlist = re.findall(r'税率(\d+)%', note)
             taxrate = 0.06 if not taxlist else int(taxlist[0]) / 100
             for amountwithtax in amoutlist:
                 amountwithtax = int(amountwithtax)
@@ -331,4 +331,4 @@ if __name__ == "__main__":
     insert_to_sandbox = False  # 如果想直接插入到Sandbox，请把这个改为True
     file_path = '/Users/admin/Downloads/mock 发票20210330 (1).xls'
     mockfapiao.get_mock_fapiao(file_path, insert_to_sandbox)
-    # unittest.main()
+    #unittest.main()
