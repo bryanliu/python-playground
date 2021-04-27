@@ -1,4 +1,4 @@
-# 这里面尝试了几个Python的web服务器以及初步的性能测试
+```# 这里面尝试了几个Python的web服务器以及初步的性能测试
 
 ## web.py
 ### 安装
@@ -58,13 +58,13 @@ django-admin startproject mysite
 来生成站点的，不过遇到pip3 安装路径不在path中，所以找不到。这个问题还没解决。
 所以用了workaround
 ```shell
-python -m django startproject mysite
+python3 -m django startproject mysite
 ```
 ### 运行
 到mysite 的目录下面
 执行
 ```shell
-python manage.py runserver
+python3 manage.py runserver
 ```
 服务就运行起来了
 
@@ -183,4 +183,13 @@ Requests per second:    1194.41 [#/sec] (mean)
 Time per request:       83.723 [ms] (mean)
 Time per request:       0.837 [ms] (mean, across all concurrent requests)
 Transfer rate:          195.96 [Kbytes/sec] received
+```
+
+# 附录
+```shell
+python -m # 将python 模块用作脚本去运行
+```
+终于将 `python/bin` 加到 `Path`之后，可以正常运行module了。
+```shell
+export PATH1="/Library/Frameworks/Python.framework/Versions/3.9/bin:$PATH"
 ```
