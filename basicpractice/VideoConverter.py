@@ -33,7 +33,8 @@ def convertvideos(input, output=None):
             convert(inputpath, outputpath)
 
             # Rename
-            os.rename(outputpath, filename)
+            newname = os.path.join(output, filename)
+            os.rename(outputpath, newname)
 
 
 def convert(input, output):
