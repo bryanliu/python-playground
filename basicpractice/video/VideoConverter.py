@@ -6,11 +6,24 @@ import subprocess
 import time
 
 from ffmpy3 import FFmpeg
+from configparser import ConfigParser
 
-ffmpgeexecutable = r"/Users/admin/Downloads/ffmpeg"
+ffmpgeexecutable = r""
+input = ""
 
+def init():
+    curr = os.path.abspath(".")
+    global ffmpgeexecutable, input
+    configpath = os.path.abspath(r"video/.env")
+    conn = ConfigParser()
+    conn.read(configpath)
+    ffmpgeexecutable = conn.get('config', 'ffmpeg_executable')
+    input = conn.get('config', 'input')
 
-def convertvideos(input, output=None):
+def convertvideos(output=None):
+
+    init()
+
     if not os.path.exists(input):
         print("input path not exists, please verify!")
         return
@@ -53,6 +66,7 @@ def convert(input, output):
     print(ff.cmd)
     start = time.time()
     print(time.strftime("%Y-%m-%d %H:%M:%S"))
+    ff.run()
     # ff.run_async()
     # await ff.wait()
     end = time.time()
@@ -62,4 +76,4 @@ def convert(input, output):
 
 if __name__ == "__main__":
     # convert()
-    convertvideos("/Users/admin/Downloads/test")
+    convertvideos()
