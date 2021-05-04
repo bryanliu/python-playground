@@ -2,11 +2,12 @@
 # outputfile = "/Users/admin/Downloads/demo18.mp4"
 
 import os
+import subprocess
 import time
 
 from ffmpy3 import FFmpeg
 
-ffmpgeexecutable = r"C:\Users\bqsd\Downloads\ffmpeg-4.4-full_build\bin\ffmpeg"
+ffmpgeexecutable = r"/Users/admin/Downloads/ffmpeg"
 
 
 def convertvideos(input, output=None):
@@ -40,6 +41,7 @@ def convertvideos(input, output=None):
 def convert(input, output):
     ff = FFmpeg(executable=ffmpgeexecutable,
                 inputs={input: None},
+
                 # outputs={output: '-vn -ar 44100 -ac 2 -ab 192 -f wav'}
                 # outputs={output: '-vf fps=fps=10 -vf scale=iw/2:ih/2 '}
                 # outputs={output: ' -r 30 -vf scale=iw/2:ih/2'}
@@ -51,7 +53,6 @@ def convert(input, output):
     print(ff.cmd)
     start = time.time()
     print(time.strftime("%Y-%m-%d %H:%M:%S"))
-    ff.run()
     # ff.run_async()
     # await ff.wait()
     end = time.time()
@@ -61,4 +62,4 @@ def convert(input, output):
 
 if __name__ == "__main__":
     # convert()
-    convertvideos(r"D:\Downloads\test")
+    convertvideos("/Users/admin/Downloads/test")
