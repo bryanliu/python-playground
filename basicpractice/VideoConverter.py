@@ -6,7 +6,7 @@ import time
 
 from ffmpy3 import FFmpeg
 
-ffmpgeexecutable = "/Users/admin/Downloads/ffmpeg"
+ffmpgeexecutable = r"C:\Users\bqsd\Downloads\ffmpeg-4.4-full_build\bin\ffmpeg"
 
 
 def convertvideos(input, output=None):
@@ -25,19 +25,26 @@ def convertvideos(input, output=None):
     for file in filenames:
         inputpath = os.path.join(input, file)
         if os.path.isfile(inputpath) and file.split(".")[-1].lower() in ['mp4', 'mkv', 'avi']:
-            outputpath = os.path.join(output, file)
+            filename = file.split(".")[0]
+            # all convert to mp4
+            outputpath = os.path.join(output, filename + ".mp4")
             print(inputpath)
             print(outputpath)
             convert(inputpath, outputpath)
+
+            # Rename
+            os.rename(outputpath, filename)
 
 
 def convert(input, output):
     ff = FFmpeg(executable=ffmpgeexecutable,
                 inputs={input: None},
-                # outputs={outputfile: '-vn -ar 44100 -ac 2 -ab 192 -f wav'}
-                # outputs={outputfile: '-vf fps=fps=10 -vf scale=iw/2:ih/2 '}
-                # outputs={outputfile: ' -r 30 -vf scale=iw/2:ih/2'}
-                outputs={output: '-b:v 1500k'}
+                # outputs={output: '-vn -ar 44100 -ac 2 -ab 192 -f wav'}
+                # outputs={output: '-vf fps=fps=10 -vf scale=iw/2:ih/2 '}
+                # outputs={output: ' -r 30 -vf scale=iw/2:ih/2'}
+                # outputs={output: '-b:v 2500k -vf scale=iw*0.7:ih*0.7'} #分辨率变为原来的70%
+                # outputs={output: '-b:v 2500k'} #码率
+                outputs={output: ''}  # avi 到 mp4 只是编码转一下，就可以缩小一半的体积，原来码率差不多要5M，现在之哟啊2.2M左右
 
                 )
     print(ff.cmd)
@@ -53,4 +60,4 @@ def convert(input, output):
 
 if __name__ == "__main__":
     # convert()
-    convertvideos("/Users/admin/Downloads/test")
+    convertvideos(r"D:\Downloads\test")
