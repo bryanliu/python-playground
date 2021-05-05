@@ -10,11 +10,11 @@ from configparser import ConfigParser
 
 ffmpgeexecutable = r""
 input = ""
-
 def init():
     curr = os.path.abspath(".")
+    print("current folder: ", curr)
     global ffmpgeexecutable, input
-    configpath = os.path.abspath(r"video/.env")
+    configpath = os.path.abspath(r".env")
     conn = ConfigParser()
     conn.read(configpath)
     ffmpgeexecutable = conn.get('config', 'ffmpeg_executable')
