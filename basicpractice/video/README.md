@@ -4,3 +4,4 @@
 1. 根据平台，下载，安装相应的 ffmpeg版本，并且加到系统路径中
 
 ## 运行
+1. `pip3 install ffmpeg`
