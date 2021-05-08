@@ -5,3 +5,4 @@
 
 ## 运行
 1. `pip3 install ffmpeg` for python
+1. using ffmpeg python wrapper to execute ffmpeg
